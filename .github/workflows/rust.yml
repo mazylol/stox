@@ -10,20 +10,13 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  build-linux:
+  build:
 
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
     - uses: actions/checkout@v3
     - name: Build
       run: cargo build
-  
-  build-windows:
-    
-    runs-on: windows-latest
-    
-    steps:
-    - uses: actions/checkout@v3
-    - name: Build
-      run: cargo build
+    - name: Test
+      run: cargo test
