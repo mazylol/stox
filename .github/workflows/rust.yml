@@ -17,13 +17,13 @@ jobs:
     steps:
     - uses: actions/checkout@v3
     - name: Build
-      run: cargo build --verbose
+      run: cargo build
   
   build-windows:
     
     runs-on: windows-latest
     
     steps:
-    - uses: actions/checout@v3
+    - uses: actions/checkout@v3
     - name: Build
-      run: cargo build --verbose
+      run: cargo build
