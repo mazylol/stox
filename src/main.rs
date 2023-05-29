@@ -1,8 +1,8 @@
-mod fs;
 mod api;
+mod fs;
 use fs::Config;
 
-use clap::{command, Args, Parser, Subcommand, ValueEnum};
+use clap::{command, Parser, Subcommand};
 
 #[derive(Debug, Parser)]
 #[command(name = "stox")]
@@ -16,9 +16,7 @@ struct Cli {
 enum Commands {
     #[command(arg_required_else_help = true)]
     #[command(about = "Current stock price for a given ticker")]
-    Current {
-        ticker: String,
-    },
+    Current { ticker: String },
 }
 
 #[tokio::main]
@@ -29,7 +27,7 @@ async fn main() {
     match cli.command {
         Commands::Current { ticker } => {
             let price = api::get_price(config, ticker);
-            println!("Current price: {}", price.await);
+            println!("Current price: ${}", price.await);
         }
     }
 }

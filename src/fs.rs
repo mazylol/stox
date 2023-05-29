@@ -39,6 +39,5 @@ mod tests {
     fn test_load() {
         let config = Config::load();
         println!("{}", config.api_key);
-
     }
 }
