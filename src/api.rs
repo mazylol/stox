@@ -13,7 +13,9 @@ pub async fn get_price(config: Config, ticker: String) -> f64 {
         .unwrap()
         .json()
         .await
-        .unwrap();
+        .unwrap_or(Price {
+            price: String::from("0"),
+        });
 
     return response.price.parse::<f64>().unwrap();
 }
