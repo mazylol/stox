@@ -1,5 +1,7 @@
 mod api;
 mod fs;
+mod types;
+
 use fs::Config;
 
 use clap::{command, Parser, Subcommand};
@@ -17,6 +19,14 @@ enum Commands {
     #[command(arg_required_else_help = true)]
     #[command(about = "Current stock price for a given ticker")]
     Current { ticker: String },
+
+    #[command(arg_required_else_help = true)]
+    #[command(about = "Currency conversion")]
+    Convert {
+        from: String,
+        to: String,
+        amount: f64,
+    },
 }
 
 #[tokio::main]
@@ -26,8 +36,12 @@ async fn main() {
 
     match cli.command {
         Commands::Current { ticker } => {
-            let price = api::get_price(config, ticker);
+            let price = api::get_price(&config, ticker);
             println!("Current price: ${}", price.await);
+        }
+        Commands::Convert { from, to, amount } => {
+            let amount = api::get_conversion(&config, from, to, amount);
+            println!("Conversion: {}", amount.await);
         }
     }
 }
