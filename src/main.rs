@@ -2,7 +2,7 @@ mod api;
 mod fs;
 mod types;
 
-use fs::Config;
+use types::{Config, Save};
 
 use clap::{command, Parser, Subcommand};
 
@@ -32,6 +32,9 @@ enum Commands {
 #[tokio::main]
 async fn main() {
     let config: Config = Config::load();
+
+    let save: Save = Save::load();
+
     let cli = Cli::parse();
 
     match cli.command {

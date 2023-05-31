@@ -1,4 +1,4 @@
-use crate::fs::Config;
+use crate::types::Config;
 
 use crate::types::{Conversion, Price};
 

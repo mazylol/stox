@@ -1,13 +1,8 @@
 use std::{fs, fs::File, io::Write};
 
-use serde::{Deserialize, Serialize};
-
 use directories::ProjectDirs;
 
-#[derive(Serialize, Deserialize)]
-pub struct Config {
-    pub api_key: String,
-}
+use crate::types::{Config, Save};
 
 impl Config {
     pub fn load() -> Self {
@@ -34,6 +29,40 @@ impl Config {
 
             return config;
         }
+    }
+}
+
+impl Save {
+    pub fn load() -> Self {
+        let path = ProjectDirs::from("com", "mazylol", "stox")
+            .unwrap()
+            .config_dir()
+            .join("save.json");
+        let file = File::open(&path);
+        if file.is_err() {
+            fs::create_dir_all(&path.parent().unwrap()).unwrap();
+            let mut file = File::create(&path).unwrap();
+            let save = Save {
+                stocks: Vec::new(),
+                balance: 0.0,
+            };
+            let json = serde_json::to_string_pretty(&save).unwrap();
+            file.write_all(json.as_bytes()).unwrap();
+            return save;
+        } else {
+            let save: Save = serde_json::from_reader(file.unwrap()).unwrap();
+            return save;
+        }
+    }
+
+    pub fn save(&self) {
+        let path = ProjectDirs::from("com", "mazylol", "stox")
+            .unwrap()
+            .config_dir()
+            .join("save.json");
+        let mut file = File::create(&path).unwrap();
+        let json = serde_json::to_string_pretty(&self).unwrap();
+        file.write_all(json.as_bytes()).unwrap();
     }
 }
 
