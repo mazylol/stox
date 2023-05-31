@@ -26,7 +26,13 @@ impl Config {
             file.write_all(json.as_bytes()).unwrap();
             return config;
         } else {
-            return serde_json::from_reader(file.unwrap()).unwrap();
+            let config: Config = serde_json::from_reader(file.unwrap()).unwrap();
+
+            if config.api_key == "REPLACE_ME" {
+                panic!("API Key needs set at {:?}", path);
+            }
+
+            return config;
         }
     }
 }
